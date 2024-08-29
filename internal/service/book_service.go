@@ -29,7 +29,7 @@ func (s *BookService) GetBook(id uint) (*models.Book, error) {
 	return s.repo.GetByID(id)
 }
 
-func (s *BookService) updateBook(id uint, bookPayload dto.UpdateBookDTO) (*models.Book, error) {
+func (s *BookService) UpdateBook(id uint, bookPayload dto.UpdateBookDTO) (*models.Book, error) {
 	return s.repo.Update(id, bookPayload)
 }
 

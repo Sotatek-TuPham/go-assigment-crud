@@ -15,6 +15,10 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 	orderService := service.NewOrderService(orderRepo)
 	orderHandler := handlers.NewOrderHandler(orderService)
 
+	bookRepo := repository.NewBookRepository(db)
+	bookService := service.NewBookService(bookRepo)
+	bookHandler := handlers.NewBookHandler(bookService)
+
 	orderRoutes := router.Group("/orders")
 	{
 		orderRoutes.POST("", orderHandler.CreateOrder)
@@ -24,15 +28,11 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 		orderRoutes.DELETE("/:id", orderHandler.DeleteOrder)
 	}
 
-	// Add other entity routes here
-	// Example:
-	// productRepo := repository.NewProductRepository(db)
-	// productService := service.NewProductService(productRepo)
-	// productHandler := handlers.NewProductHandler(productService)
-	//
-	// productRoutes := router.Group("/products")
-	// {
-	//     productRoutes.POST("", productHandler.CreateProduct)
-	//     ...
-	// }
+	bookRoutes := router.Group("/books")
+	{
+		bookRoutes.POST("", bookHandler.CreateBook)
+		bookRoutes.GET("/:id", bookHandler.GetBook)
+		bookRoutes.PUT("/:id", bookHandler.UpdateBook)
+		bookRoutes.DELETE("/:id", bookHandler.DeleteBook)
+	}
 }
