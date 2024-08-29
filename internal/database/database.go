@@ -23,6 +23,7 @@ func Migrate(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&models.Order{},
 		&models.LineItem{},
+		&models.Book{},
 		// Add other models here as needed
 	)
 }
