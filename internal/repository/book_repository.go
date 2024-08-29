@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/hauchu1196/ecombase/internal/api/dto"
 	"github.com/hauchu1196/ecombase/internal/models"
 	"gorm.io/gorm"
 )
@@ -27,8 +28,23 @@ func (r *BookRepository) GetByID(id uint) (*models.Book, error) {
 	return &book, err
 }
 
-func (r *BookRepository) Update(book *models.Book) error {
-	return r.db.Session(&gorm.Session{FullSaveAssociations: true}).Save(book).Error
+func (r *BookRepository) Update(id uint, payload dto.UpdateBookDTO) (*models.Book, error) {
+	var book models.Book
+	r.db.Where("id = ?", id).First(&book)
+	if payload.BookName != nil {
+		book.BookName = *payload.BookName
+	}
+	if payload.Author != nil {
+		book.Author = *payload.Author
+	}
+	if payload.Category != nil {
+		book.Category = *payload.Category
+	}
+	if payload.Shell != nil {
+		book.Shell = *payload.Shell
+	}
+	err := r.db.Save(&book).Error
+	return &book, err
 }
 
 func (r *BookRepository) Delete(id uint) error {
